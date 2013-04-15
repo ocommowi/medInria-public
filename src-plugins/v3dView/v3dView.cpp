@@ -23,7 +23,7 @@
 #include <vtkCamera.h>
 #include <vtkCommand.h>
 #include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
+#include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkLookupTableManager.h>
 #include <vtkTransferFunctionPresets.h>
 #include <vtkColorTransferFunction.h>
@@ -45,7 +45,7 @@
 #include <vtkImageViewCollection.h>
 #include <vtkColorTransferFunction.h>
 #include <vtkPiecewiseFunction.h>
-#include <QVTKWidget.h>
+#include <QVTKWidget2.h>
 
 #include <QtGui>
 #include <QMenu>
@@ -270,7 +270,7 @@ public:
 
     v3dViewObserver *observer;
 
-    vtkRenderWindow *renWin;
+    vtkGenericOpenGLRenderWindow *renWin;
 
     QWidget    *widget;
     QSlider    *slider;
@@ -280,7 +280,7 @@ public:
     QPushButton *playButton;
     QPushButton *closeButton;
     QPushButton *fullScreenButton;
-    QVTKWidget *vtkWidget;
+    QVTKWidget2 *vtkWidget;
     QString orientation;
 
     dtkAbstractData *data;
@@ -487,11 +487,11 @@ v3dView::v3dView() : medAbstractView(), d ( new v3dViewPrivate )
     toolButtonGroup->addButton ( d->linkButton );
     toolButtonGroup->setExclusive ( false );
 
-    d->vtkWidget = new QVTKWidget ( d->widget );
+    d->vtkWidget = new QVTKWidget2 ( d->widget );
     d->vtkWidget->setSizePolicy ( QSizePolicy::Minimum, QSizePolicy::Minimum );
     d->vtkWidget->setFocusPolicy ( Qt::NoFocus );
 
-    d->renWin = vtkRenderWindow::New();
+    d->renWin = vtkGenericOpenGLRenderWindow::New();
     d->renWin->StereoCapableWindowOn();
     d->renWin->SetStereoTypeToCrystalEyes();
     // if(qApp->arguments().contains("--stereo"))
