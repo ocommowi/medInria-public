@@ -101,7 +101,6 @@ target_link_libraries(${PROJECT_NAME}
   ITKIOStimulate
   ${ITKReview_LIBRARIES}
   medCore
-  medGui
   medRegistration
   )
 
