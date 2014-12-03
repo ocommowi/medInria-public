@@ -15,28 +15,25 @@
 
 #include <medToolBox.h>
 #include <medCoreExport.h>
+#include <medProcessSelectorToolBox.h>
 
 class medViewEventFilter;
 class medSegmentationAbstractToolBox;
 
 class medSegmentationSelectorToolBoxPrivate;
-class MEDCORE_EXPORT medSegmentationSelectorToolBox : public medToolBox
+class MEDCORE_EXPORT medSegmentationSelectorToolBox : public medProcessSelectorToolBox
 {
     Q_OBJECT
 
 public:
-     medSegmentationSelectorToolBox(QWidget *parent = 0);
+     medSegmentationSelectorToolBox(QWidget *parent = 0, QString title="Segmentation");
     ~medSegmentationSelectorToolBox();
-
-     medSegmentationAbstractToolBox* currentToolBox();
 
 signals:
      void installEventFilterRequest(medViewEventFilter *filter);
      void inputChanged();
 
 public slots:
-    void changeCurrentToolBox(int index);
-
 
 private:
     medSegmentationSelectorToolBoxPrivate *d;

@@ -14,13 +14,21 @@
 #pragma once
 
 #include <medAbstractProcess.h>
+#include <medViewEventFilter.h>
+
 
 class medAbstractSegmentationProcess : public medAbstractProcess
 {
+    Q_OBJECT
+
 public:
     medAbstractSegmentationProcess(medAbstractProcess *parent = NULL);
 
 public:
     virtual bool isInteractive() const;
+
+signals:
+    void inputChanged();
+    void installEventFilterRequest(medViewEventFilter *filter);
 };
 

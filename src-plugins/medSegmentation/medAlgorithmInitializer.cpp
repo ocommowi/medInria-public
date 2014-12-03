@@ -13,6 +13,7 @@
 
 #include <medAlgorithmInitializer.h>
 
+#include <medManualSegProcess.h>
 #include <medAlgorithmPaintToolbox.h>
 #include <medToolBoxFactory.h>
 
@@ -35,6 +36,16 @@ bool medAlgorithmInitializer::initialize()
 
 bool medAlgorithmInitializer::initializeProcesses()
 {
+    if(!medManualSegProcess::registered())
+    {
+        dtkWarn() << "Unable to register PaintSegmentation type";
+    }
+
+    if ( !medManualSegProcess::registered() )
+    {
+        dtkWarn() << "Unable to register PaintSegmentation toolbox";
+    }
+
     return true;
 }
 

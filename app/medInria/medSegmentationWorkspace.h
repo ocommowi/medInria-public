@@ -32,7 +32,7 @@ class medSegmentationWorkspace : public medAbstractWorkspace
     MED_WORKSPACE_INTERFACE("Segmentation",
                             "Segmentation workspace.")
 public:
-    medSegmentationWorkspace(QWidget * parent = NULL);
+    medSegmentationWorkspace(QWidget * parent = 0);
 
     virtual ~medSegmentationWorkspace();
 
@@ -41,12 +41,20 @@ public:
     //! Implement abstract method in base class.
     void setupTabbedViewContainer();
 
-    medSegmentationSelectorToolBox * segmentationToobox();
+    medSegmentationSelectorToolBox * segmentationTooboxManu();
+    medSegmentationSelectorToolBox * segmentationTooboxSemiAuto();
 
 protected slots:
     void addViewEventFilter(medViewEventFilter * filter );
 
     void onSuccess();
+
+    void setupProcess(QString);
+    void setupProcessManu(QString);
+    void startProcess();
+    void startProcessManu();
+    void enableSelectorToolBox();
+    void enableSelectorToolBoxManu();
 
 
 private:

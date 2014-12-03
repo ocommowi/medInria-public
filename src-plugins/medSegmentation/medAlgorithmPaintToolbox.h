@@ -56,7 +56,7 @@ public:
 
     typedef itk::Image<unsigned char, 3> MaskType;
 
-    medAlgorithmPaintToolbox( QWidget *parent );
+    medAlgorithmPaintToolbox( QWidget *parent = 0 );
     ~medAlgorithmPaintToolbox();
 
     inline void setPaintState( PaintState::E value){m_paintState = value;}
