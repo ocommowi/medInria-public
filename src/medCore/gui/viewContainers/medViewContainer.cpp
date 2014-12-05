@@ -154,6 +154,16 @@ medViewContainer::medViewContainer(medViewContainerSplitter *parent): QFrame(par
     connect(d->maximizedAction, SIGNAL(triggered()), this, SLOT(toggleMaximized()));
     d->maximizedAction->setEnabled(false);
 
+    d->presetSplitButton = new QPushButton(this);
+    d->presetSplitButton->setIcon(QIcon(":/icons/splitPresets.png"));
+    d->presetSplitButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    d->presetSplitButton->setToolTip(tr("Split into presets"));
+    connect(d->presetSplitButton, SIGNAL(clicked()), this, SLOT(togglePopupPresetSplitter()));
+
+    d->presetLayoutChooser = new medLayoutChooser(this);
+    d->presetLayoutChooser->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+    connect(d->presetLayoutChooser, SIGNAL(selected(int,int)), this, SLOT(splitContainer(int,int)));
+
     d->toolBarMenu = new QMenu(this);
     d->toolBarMenu->addActions(QList<QAction*>() << d->openAction);
     d->toolBarMenu->addSeparator();
