@@ -155,6 +155,16 @@ void medSegmentationWorkspace::addViewEventFilter( medViewEventFilter * filter)
     }
 }
 
+//TODO: not tested yet
+void medSegmentationWorkspace::onSuccess()
+{
+    //medAbstractData * output = d->segmentationToolBoxManu->currentToolBox()->processOutput();
+    //medDataManager::instance()->importData(output);
+
+    //medAbstractData * outputSemiAuto = d->segmentationToolBoxSemiAuto->currentToolBox()->processOutput();
+    //medDataManager::instance()->importData(outputSemiAuto);
+}
+
 
 void medSegmentationWorkspace::setupProcess(QString process)
 {
