@@ -85,6 +85,7 @@ bool medClickAndMoveEventFilter::mousePressEvent(medAbstractView *view, QMouseEv
     // let's take the first non medImageMaskAnnotationData as the reference data
     // TODO: to improve...
 
+
     for(unsigned int i=0; i<imageView->layersCount(); i++)
     {
 

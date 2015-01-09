@@ -318,6 +318,22 @@ void medAbstractProcess::updateContainer(medInputDataPort *inputDataPort)
         d->containerForInputPort.value(inputDataPort)->addData(inputDataPort->input());
 }
 
+medViewContainer* medAbstractProcess::container(medInputDataPort *inputDataPort)
+{
+    if(!inputDataPort)
+        return NULL;
+
+    return d->containerForInputPort.value(inputDataPort);
+}
+
+medViewContainer* medAbstractProcess::containerO(medOutputDataPort *outputDataPort)
+{
+    if(!outputDataPort)
+        return NULL;
+
+    return d->containerForOutputPort.value(outputDataPort);
+}
+
 void medAbstractProcess::retrieveInputs(const medAbstractProcess *other)
 {
     foreach(medProcessIOPort *otherProcessPort, other->inputs())

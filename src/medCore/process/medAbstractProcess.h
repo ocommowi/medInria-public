@@ -32,6 +32,7 @@ class medAbstractParameter;
 class medToolBox;
 class medTriggerParameter;
 class medViewContainerSplitter;
+class medViewContainer;
 
 
 class medProcessIOPort
@@ -237,11 +238,16 @@ public:
 public:
     virtual bool isInteractive() const = 0;
 
+protected:
+    virtual medViewContainer* container(medInputDataPort *);
+    virtual medViewContainer* containerO(medOutputDataPort *);
+
 private:
     virtual int update () = 0;
 
 private:
     virtual void updateContainer(medInputDataPort *);
+
 
 signals:
     void showError(QString message, unsigned int timeout = 5000);
