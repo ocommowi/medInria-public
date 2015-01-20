@@ -74,8 +74,8 @@ void medDropSite::setValue(const medDataIndex &index)
         return;
 
     d->index = index;
-    if (d->canAutomaticallyChangeAppereance )
-        setPixmap(QPixmap::fromImage(medDataManager::instance()->retrieveData(index)->thumbnail()).scaled(this->sizeHint()));
+    if (d->canAutomaticallyChangeAppereance)
+        setPixmap(medDataManager::instance()->thumbnail(index).scaled(this->sizeHint()));
 
     emit valueChanged(index);
 }
