@@ -48,7 +48,6 @@ void medRunnableProcess::cancel()
     m_process->cancel();
 }
 
-
 class medAbstractProcessPrivate
 {
   public:
@@ -61,7 +60,6 @@ class medAbstractProcessPrivate
     QHash <medAbstractProcess::medInputDataPort*, medViewContainer*> containerForInputPort;
     QHash <medAbstractProcess::medOutputDataPort*, medViewContainer*> containerForOutputPort;
 };
-
 
 medAbstractProcess::medAbstractProcess(medAbstractProcess * parent):dtkAbstractProcess(parent), d(new medAbstractProcessPrivate)
 {
@@ -77,7 +75,6 @@ medAbstractProcess::~medAbstractProcess()
 {
     delete d;
 }
-
 
 QList<medProcessIOPort*> medAbstractProcess::inputs() const
 {
@@ -140,7 +137,6 @@ medToolBox* medAbstractProcess::toolbox()
     }
     return d->toolbox;
 }
-
 
 QWidget* medAbstractProcess::parameterWidget()
 {
@@ -242,8 +238,6 @@ medViewContainerSplitter* medAbstractProcess::viewContainerSplitter()
     }
     return d->viewContainerSplitter;
 }
-
-
 
 int medAbstractProcess::start()
 {

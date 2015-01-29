@@ -25,9 +25,6 @@ medAbstractSegmentationProcess::medAbstractSegmentationProcess(medAbstractProces
 
     medProcessInput<medAbstractData> *input3 = new medProcessInput<medAbstractData>("MRI Image 2", false, NULL);
     this->appendInput( input3 );
-
-
-    //this->appendOutput( new medProcessOutput<medAbstractData>("Seg Output 1", NULL));
 }
 
 bool medAbstractSegmentationProcess::isInteractive() const
