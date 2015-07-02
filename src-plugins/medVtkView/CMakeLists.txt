@@ -102,6 +102,8 @@ target_link_libraries(${PROJECT_NAME}
   medVtkInria
   vtkGUISupportQt
   vtkGUISupportQtOpenGL
+#  vtkIOMovie
+  vtkIOFFMPEG
   )
 
 

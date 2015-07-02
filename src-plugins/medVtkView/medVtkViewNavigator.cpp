@@ -18,6 +18,10 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
 #include <vtkCamera.h>
+#include <vtkTransform.h>
+#include <vtkFFMPEGWriter.h>
+//#include <vtkOggTheoraWriter.h>
+#include <vtkWindowToImageFilter.h>
 
 #include <medVtkViewBackend.h>
 #include <medViewFactory.h>
@@ -32,13 +36,18 @@
 #include <medCompositeParameter.h>
 #include <medStringListParameter.h>
 #include <medTimeLineParameter.h>
+#include <medIntParameter.h>
+#include <medTriggerParameter.h>
 
 #include <QLabel>
 #include <QPushButton>
+#include <QGroupBox>
 #include <QCheckBox>
+#include <QSpinBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
+#include <QFormLayout>
+#include <QFileDialog>
 
 /*=========================================================================
 
@@ -75,13 +84,18 @@ class medVtkViewNavigatorPrivate
     medBoolParameter *showRulerParameter;
     medBoolParameter *showAnnotationParameter;
     medBoolParameter *showScalarBarParameter;
-    
-    QPushButton *fourImageSplitterButton;
+
+    // Movie recording parameters
+    QGroupBox *movieRecordingBox;
+    medTriggerParameter *movieRecordingButton;
+    medIntParameter *movieDurationParameter;
+    medBoolParameter *rotateXAxisBox;
+    medBoolParameter *rotateYAxisBox;
+    medBoolParameter *rotateZAxisBox;
 
     QWidget *showOptionsWidget;
 
     QList<medAbstractParameter*> parameters;
-
 };
 
 /*=========================================================================
@@ -182,6 +196,19 @@ medVtkViewNavigator::medVtkViewNavigator(medAbstractView *parent) :
     d->enableMeasuring->setIcon (QIcon (":/icons/length.png"));
     d->enableMeasuring->setToolTip(tr("Measuring"));
     connect(d->enableMeasuring, SIGNAL(valueChanged(bool)), this, SLOT(enableMeasuring(bool)));
+
+    d->movieDurationParameter = new medIntParameter(tr("Movie duration"), this);
+    d->movieDurationParameter->setRange(1,3600);
+    d->movieDurationParameter->setValue(30);
+    d->rotateXAxisBox = new medBoolParameter("Rotate around X axis",this);
+    d->rotateYAxisBox = new medBoolParameter("Rotate around Y axis",this);
+    d->rotateZAxisBox = new medBoolParameter("Rotate around Z axis",this);
+    d->rotateZAxisBox->setValue(true);
+
+    d->movieRecordingBox = 0;
+    d->movieRecordingButton = new medTriggerParameter("Record movie",this);
+    d->movieRecordingButton->setToolTip(tr("Record movie"));
+    connect(d->movieRecordingButton, SIGNAL(triggered()), this, SLOT(recordMovie()));
 
     d->parameters << d->orientationParameter
                     << this->zoomParameter()
@@ -369,6 +396,70 @@ void medVtkViewNavigator::moveToPosition(const QVector3D &position)
     else d->view2d->Render();
 }
 
+void medVtkViewNavigator::recordMovie()
+{
+    if (d->orientation != medImageView::VIEW_ORIENTATION_3D)
+        return;
+
+    QString fileName = QFileDialog::getSaveFileName(0, tr("Record rotating movie as"),
+                                                    QDir::home().absolutePath(),
+                                                    QString("ogv"), 0, QFileDialog::HideNameFilterDetails);
+
+    if (fileName == "")
+        return;
+
+    d->movieRecordingButton->getPushButton()->setEnabled(false);
+
+    vtkFFMPEGWriter *movieWriter = vtkFFMPEGWriter::New();
+    movieWriter->SetFileName(fileName.toStdString().c_str());
+    movieWriter->SetQuality(2);
+    vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
+    windowToImageFilter->SetMagnification(1); //set the resolution of the output image (2 times the current resolution of vtk render window)
+
+    vtkCamera *camera = d->renderer3d->GetActiveCamera();
+    vtkTransform *transform = vtkTransform::New();
+    double newPosition[3];
+    double fp[3];
+    double position[3];
+    unsigned int numFrames = 25 * d->movieDurationParameter->value();
+
+    double rotationAngle = 360.0 / numFrames;
+    camera->GetFocalPoint(fp);
+    transform->Identity();
+    transform->Translate(fp[0],fp[1],fp[2]);
+    if (d->rotateXAxisBox->value())
+        transform->RotateX(rotationAngle);
+    if (d->rotateYAxisBox->value())
+        transform->RotateY(rotationAngle);
+    if (d->rotateZAxisBox->value())
+        transform->RotateZ(rotationAngle);
+    transform->Translate(-fp[0],-fp[1],-fp[2]);
+
+    movieWriter->SetInputConnection(windowToImageFilter->GetOutputPort());
+    movieWriter->Start();
+
+    for (unsigned int i = 0;i < numFrames;++i)
+    {
+        camera->GetPosition(position);
+
+        transform->TransformPoint(position, newPosition);
+
+        camera->SetPosition(newPosition);
+        camera->SetViewUp(transform->TransformVector(camera->GetViewUp()));
+
+        windowToImageFilter->SetInput(d->view3d->GetRenderWindow());
+        windowToImageFilter->Modified();
+        windowToImageFilter->Update();
+        movieWriter->Modified();
+        movieWriter->Write();
+    }
+
+    movieWriter->End();
+    movieWriter->Delete();
+
+    d->movieRecordingButton->getPushButton()->setEnabled(true);
+}
+
 /*=========================================================================
 
     protected
@@ -386,10 +477,28 @@ QWidget* medVtkViewNavigator::buildToolBoxWidget()
     showOptionsLayout->addWidget(d->showAnnotationParameter->getCheckBox());
     showOptionsLayout->addWidget(d->showScalarBarParameter->getCheckBox());
 
+    if (!d->movieRecordingBox)
+    {
+        d->movieRecordingBox = new QGroupBox("Movie recording");
+
+        QFormLayout *layoutMovie = new QFormLayout(d->movieRecordingBox);
+        layoutMovie->addRow(d->movieDurationParameter->getLabel(), d->movieDurationParameter->getSpinBox());
+        layoutMovie->addRow(d->rotateXAxisBox->getLabel(),d->rotateXAxisBox->getCheckBox());
+        layoutMovie->addRow(d->rotateYAxisBox->getLabel(),d->rotateYAxisBox->getCheckBox());
+        layoutMovie->addRow(d->rotateZAxisBox->getLabel(),d->rotateZAxisBox->getCheckBox());
+        d->movieRecordingButton->getPushButton()->setIcon(QIcon(":/icons/movie-icon.png"));
+        layoutMovie->addWidget(d->movieRecordingButton->getPushButton());
+
+        d->movieRecordingBox->setLayout(layoutMovie);
+        if (d->orientation != medImageView::VIEW_ORIENTATION_3D)
+            d->movieRecordingBox->hide();
+    }
+
     QVBoxLayout* layout = new QVBoxLayout(toolBoxWidget);
     layout->addWidget(d->orientationParameter->getLabel());
     layout->addWidget(d->orientationParameter->getPushButtonGroup());
     layout->addWidget(d->showOptionsWidget);
+    layout->addWidget(d->movieRecordingBox);
     layout->addWidget(this->timeLineParameter()->getWidget());
 
     return toolBoxWidget;
@@ -652,6 +761,8 @@ void medVtkViewNavigator::updateWidgets()
         d->showRulerParameter->hide();
         d->showAnnotationParameter->hide();
         d->showScalarBarParameter->hide();
+        if (d->movieRecordingBox)
+            d->movieRecordingBox->show();
     }
     else
     {
@@ -659,6 +770,8 @@ void medVtkViewNavigator::updateWidgets()
         d->showRulerParameter->show();
         d->showAnnotationParameter->show();
         d->showScalarBarParameter->show();
+        if (d->movieRecordingBox)
+            d->movieRecordingBox->hide();
     }
 }
 

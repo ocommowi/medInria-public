@@ -46,7 +46,6 @@ public:
     medStringListParameter *mode3DParameter;
     medStringListParameter *renderer3DParameter;
     medBoolParameter *croppingParameter;
-
 };
 
 
@@ -260,7 +259,6 @@ void medVtkViewItkDataImageNavigator::enableCropping(bool enabled)
     //TODO: Shouldn't we be able to save the cropping after?
 }
 
-
 /*=========================================================================
 
     protected
@@ -274,6 +272,7 @@ QWidget *  medVtkViewItkDataImageNavigator::buildToolBoxWidget()
     QFormLayout *layout = new QFormLayout(toolBoxWidget);
     foreach(medAbstractParameter *parameter, d->parameters)
         layout->addRow(parameter->getLabel(), parameter->getWidget());
+
     toolBoxWidget->hide();
     return toolBoxWidget;
 }
@@ -284,8 +283,3 @@ QWidget *medVtkViewItkDataImageNavigator::buildToolBarWidget()
     toolBarWidget->hide();
     return toolBarWidget;
 }
-
-
-
-
-

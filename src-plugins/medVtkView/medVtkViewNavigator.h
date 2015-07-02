@@ -54,6 +54,8 @@ public slots:
                            const QVector3D &focal,
                            double parallelScale);
 
+    void recordMovie();
+
 signals:
     void orientationChanged();
 
