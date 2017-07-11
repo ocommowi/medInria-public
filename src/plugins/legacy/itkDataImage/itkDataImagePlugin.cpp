@@ -38,11 +38,11 @@
 #include <itkDataImageRGB3.h>
 #include <itkDataImageRGBA3.h>
 
-#include <medVtkViewItkDataImageInteractor.h>
-#include <medVtkViewItkDataImage4DInteractor.h>
-#include <medVtkViewItkVectorFieldInteractor.h>
+#include <medVTKSimpleViewItkDataImageInteractor.h>
+//#include <medVtkViewItkDataImage4DInteractor.h>
+//#include <medVtkViewItkVectorFieldInteractor.h>
 
-#include <medVtkViewItkDataImageNavigator.h>
+#include <medVTKSimpleViewItkDataImageNavigator.h>
 
 #ifdef ITK_USE_SYSTEM_GDCM
 #include <itkGDCMDataImageReader.h>
@@ -133,11 +133,11 @@ bool itkDataImagePlugin::initialize()
     if(!itkDataImageRGB3::registered()) { dtkWarn() << "Unable to register itkDataImageRGB3 type"; }
     if(!itkDataImageRGBA3::registered()) { dtkWarn() << "Unable to register itkDataImageRGBA3 type"; }
 
-    if(!medVtkViewItkDataImageInteractor::registered()) { dtkWarn() << "Unable to register medVtkViewItkDataImageInteractor"; }
-    if(!medVtkViewItkDataImage4DInteractor::registered()) { dtkWarn() << "Unable to register medVtkViewItkDataImage4DInteractor"; }
-    if(!medVtkViewItkVectorFieldInteractor::registered()) { dtkWarn() << "Unable to register medVtkViewItkVectorFieldInteractor"; }
+    if(!medVTKSimpleViewItkDataImageInteractor::registered()) { dtkWarn() << "Unable to register medVTKSimpleViewItkDataImageInteractor"; }
+//    if(!medVtkViewItkDataImage4DInteractor::registered()) { dtkWarn() << "Unable to register medVtkViewItkDataImage4DInteractor"; }
+//    if(!medVtkViewItkVectorFieldInteractor::registered()) { dtkWarn() << "Unable to register medVtkViewItkVectorFieldInteractor"; }
 
-    if(!medVtkViewItkDataImageNavigator::registered()) { dtkWarn() << "Unable to register medVtkViewItkDataImageNavigator"; }
+    if(!medVTKSimpleViewItkDataImageNavigator::registered()) { dtkWarn() << "Unable to register medVTKSimpleViewItkDataImageNavigator"; }
 
     if (!itkMetaDataImageReader::registered())       { dtkWarn() << "Unable to register itkMetaDataImageReader type";       }
 #ifdef ITK_USE_SYSTEM_GDCM

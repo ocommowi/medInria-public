@@ -20,7 +20,7 @@
 #include <vtkImageProperty.h>
 
 #include <medAbstractImageView.h>
-#include <medVtkViewBackend.h>
+#include <medVTKSimpleViewBackend.h>
 #include <medViewFactory.h>
 #include <medAbstractImageData.h>
 #include <medDoubleParameterL.h>

@@ -131,7 +131,7 @@ target_link_libraries(${TARGET_NAME}
   medCore
   medImageIO
   medLog
-  medVtkInria
+  medVTKSimpleViewer
   )
 
 ## #############################################################################
