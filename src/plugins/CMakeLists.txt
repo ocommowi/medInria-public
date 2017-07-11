@@ -39,17 +39,18 @@ option(BUILD_COMPOSITEDATASET_PLUGIN
 ## ADD here any new plugin with a default compilation value,
 ## you want to include in the build,
 set(PLUGIN_LIST
-  legacy/medVtkFibersData                                                ON
+  legacy/medVtkFibersData                                                OFF
   legacy/itkDataImage                                                    ON
-  legacy/vtkDataMesh                                                     ON
+  legacy/vtkDataMesh                                                     OFF
   legacy/itkDataDiffusionGradientList                                    ON
-  legacy/itkDataTensorImage                                              ON
-  legacy/medSegmentation                                                 ON
+  legacy/itkDataTensorImage                                              OFF
+  legacy/medSegmentation                                                 OFF
   legacy/qtdcmDataSource                                                 ON
-  legacy/itkDataSHImage                                                  ON
+  legacy/itkDataSHImage                                                  OFF
   legacy/undoRedoRegistration                                            ON
   legacy/itkProcessRegistrationDiffeomorphicDemons                       ON
-  legacy/medVtkView                                                      ON
+  legacy/medVtkView                                                      OFF
+  legacy/medVTKSimpleView                                                ON
   process/arithmetic_operation                                           ON
   process/dwi_basic_thresholding                                         ON
   process/morphomath_operation                                           ON

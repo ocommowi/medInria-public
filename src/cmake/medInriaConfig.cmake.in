@@ -33,9 +33,9 @@ add_library(medImageIO UNKNOWN IMPORTED)
 find_library(medImageIO_LIBRARY NAMES medImageIO PATHS @medImageIO_LIBRARY_DIR@ @medImageIO_LIBRARY_DIR@/@CMAKE_BUILD_TYPE@)
 set_target_properties(medImageIO PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "@medImageIO_INCLUDE_DIRS@" IMPORTED_LOCATION ${medImageIO_LIBRARY})
 
-add_library(medVtkInria UNKNOWN IMPORTED)
-find_library(medVtkInria_LIBRARY NAMES medVtkInria PATHS @medVtkInria_LIBRARY_DIR@ @medVtkInria_LIBRARY_DIR@/@CMAKE_BUILD_TYPE@)
-set_target_properties(medVtkInria PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "@medVtkInria_INCLUDE_DIRS@" IMPORTED_LOCATION ${medVtkInria_LIBRARY})
+add_library(medVTKSimpleViewer UNKNOWN IMPORTED)
+find_library(medVTKSimpleViewer_LIBRARY NAMES medVTKSimpleViewer PATHS @medVTKSimpleViewer_LIBRARY_DIR@ @medVTKSimpleViewer_LIBRARY_DIR@/@CMAKE_BUILD_TYPE@)
+set_target_properties(medVTKSimpleViewer PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "@medVTKSimpleViewer_INCLUDE_DIRS@" IMPORTED_LOCATION ${medVTKSimpleViewer_LIBRARY})
 
 add_library(medWidgets UNKNOWN IMPORTED)
 find_library(medWidgets_LIBRARY NAMES medWidgets PATHS @medWidgets_LIBRARY_DIR@ @medWidgets_LIBRARY_DIR@/@CMAKE_BUILD_TYPE@)

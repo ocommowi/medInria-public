@@ -30,4 +30,5 @@ add_subdirectory(legacy/medLog)
 add_subdirectory(legacy/medImageIO)
 add_subdirectory(legacy/medRegistration)
 
-add_subdirectory(legacy/medVtkInria)
+add_subdirectory(legacy/medVTKSimpleViewer)
+#add_subdirectory(legacy/medVtkInria)

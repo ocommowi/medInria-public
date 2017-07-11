@@ -151,7 +151,7 @@ endif()
 # Setup Configuration files
 ################################################################################
 
-set_lib_properties_variables(medCoreLegacy medLog medRegistration medCore medImageIO medVtkInria medWidgets)
+set_lib_properties_variables(medCoreLegacy medLog medRegistration medCore medImageIO medVTKSimpleViewer medWidgets)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in)
   configure_file( ## Build tree configure file
